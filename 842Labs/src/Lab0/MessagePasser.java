@@ -54,11 +54,6 @@ public class MessagePasser {
 		message.set_source(name);
 		message.set_seqNum(++seq);
 		
-		if (message instanceof TimeStampedMessage) {
-			TimeStampedMessage timeStampedMessage = (TimeStampedMessage)message;
-			timeStampedMessage.setTimeStamp(clockFactory.getClockType().getTimeStamp());
-		}
-		
 		boolean send = true;
 		boolean check = true;
 
@@ -112,6 +107,12 @@ public class MessagePasser {
 			}
 			
 		}
+		
+		if (message instanceof TimeStampedMessage) {
+			TimeStampedMessage timeStampedMessage = (TimeStampedMessage)message;
+			timeStampedMessage.setTimeStamp(clockFactory.getClockType().getTimeStamp());
+		}
+		
 		OutputStream out = node.socket.getOutputStream();
 		DataOutputStream out2 = new DataOutputStream(out);
 		try {
@@ -134,6 +135,7 @@ public class MessagePasser {
 		if (message instanceof TimeStampedMessage) {
 			TimeStampedMessage timeStampedMessage = (TimeStampedMessage)message;
 			clockFactory.getClockType().clockSynchronize(timeStampedMessage);
+			clockFactory.getClockType().print();
 		}
 		
 		while (!receiveDelayQueue.isEmpty()) {
@@ -152,6 +154,10 @@ public class MessagePasser {
 
 	public int getId() {
 		return id;
+	}
+
+	public void increment(int parseInt) {
+		clockFactory.getClockType().increment();
 	}
 
 	

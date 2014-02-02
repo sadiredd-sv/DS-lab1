@@ -2,7 +2,7 @@ package Lab1;
 import Lab0.Message;
 
 
-public class TimeStampedMessage extends Message {
+public class TimeStampedMessage extends Message implements Comparable{
 	
 	private ClockService clockservice;
 	
@@ -11,10 +11,9 @@ public class TimeStampedMessage extends Message {
 	 *  */
 	private Object timeStamp;
 	
-	public TimeStampedMessage(String dest, String kind, Object data, ClockService clockservice, Object timeStamp) {
+	public TimeStampedMessage(String dest, String kind, String data, ClockService clockservice) {
 		super(dest, kind, data);
 		this.clockservice = clockservice;
-		this.timeStamp = timeStamp;
 	}
 	
 	public ClockService getClockService(){
@@ -31,11 +30,27 @@ public class TimeStampedMessage extends Message {
 	
 	public int compare(TimeStampedMessage message)
     {
-            return clockservice.compare(timeStamp, message.getTimeStamp());
+        return clockservice.compare(timeStamp, message.getTimeStamp());
     }
 	
 	public boolean equal(TimeStampedMessage message)
     {
-            return clockservice.equal(timeStamp, message.getTimeStamp());
+        return clockservice.equal(timeStamp, message.getTimeStamp());
     }
+
+	public int compareTo(TimeStampedMessage message) {
+		return clockservice.compare(timeStamp, message.getTimeStamp());
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		return clockservice.compare(timeStamp, ((TimeStampedMessage)o).getTimeStamp());
+	}
+	
+	@Override
+	public String toString() {
+		String ans = super.toString();
+		ans = ans + ", timestamp: " + clockservice.getTimeStampString(timeStamp);
+		return ans;
+	}
 }

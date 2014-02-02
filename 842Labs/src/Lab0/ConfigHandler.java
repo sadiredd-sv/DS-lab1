@@ -38,10 +38,10 @@ public class ConfigHandler {
 			newNode.port = (Integer) node.get("port");
 
 			messagePasser.nodes.put(newNode.name, newNode);
-			id++;
 			if (newNode.name.equals(local_name)) {
 				messagePasser.id = id;
 			}
+			id++;
 			//System.out.println("New node: " + newNode.name);
 
 		}

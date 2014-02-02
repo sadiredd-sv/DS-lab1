@@ -30,7 +30,7 @@ public class ClockFactory {
                      {
                     	 clockservice = new LogicalClock();
                      }
-                     else if (mp.getClockType().equals("Vector"))
+                     else if (mp.getClockType().equals("vector"))
                      {
                     	 /* param1: Total number of users(processes) to create a timeStamp array of that size (the size of nodes)
                     	  * param2: Id of the user(process)

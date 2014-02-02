@@ -1,4 +1,7 @@
 package Lab1;
+
+import java.util.Arrays;
+
 public class VectorClock implements ClockService<int[], TimeStampedMessage> {
 
 	/* IDs can be assigned in MessagePasser after parsing config file: alice 1, bob 2, charlie 3 */
@@ -73,6 +76,14 @@ public class VectorClock implements ClockService<int[], TimeStampedMessage> {
 			return false;
 		else
 			return true;
+	}
+	
+	public void print() {
+		System.out.println("current timestamp: " + Arrays.toString(timestamp));
+	}
+	
+	public String getTimeStampString(Object timestamp) {
+		return Arrays.toString((int[])timestamp);
 	}
 
 }

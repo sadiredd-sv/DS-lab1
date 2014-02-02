@@ -66,5 +66,10 @@ public class Message implements Serializable {
 		Message result = (Message) oint.readObject();
 		return result;
 	}
+	
+	@Override
+	public String toString() {
+		return "src: " + src + ", dest: " + dest + ", kind: " + kind + ", data: " + data + ", seq: " + seq;
+	}
 
 }

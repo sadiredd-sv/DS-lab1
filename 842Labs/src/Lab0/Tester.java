@@ -3,6 +3,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import Lab1.TimeStampedMessage;
+
 public class Tester {
 
 	/**
@@ -25,26 +27,23 @@ public class Tester {
 		listener.start();
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		System.out
-				.println("The format should be: send receiver messageKind messageBody OR receive");
+		System.out.println("The format should be: send receiver messageKind messageBody OR receive");
 		while (true) {
 			String command = br.readLine();
 			String[] arguments = command.split(" ");
-			if (arguments.length != 4 && arguments.length != 1) {
-				System.out
-						.println("The format should be: send receiver messageKind messageBody OR receive");
-			} else {
-				if (arguments.length == 4) {
-					parser.send(generateMessage(arguments));
-				} else {
-					parser.receive();
-				}
+			if (arguments[0].equals("send")) {
+				parser.send(generateMessage(arguments, parser));
+			} else if (arguments[0].equals("receive")){
+				parser.receive();
+			} else if (arguments[0].equals("increment")) {
+				parser.increment(Integer.parseInt(arguments[1]));
+				parser.clockFactory.getClockType().print();
 			}
 		}
 
 	}
 
-	public static Message generateMessage(String[] arguments) {
-		return new Message(arguments[1], arguments[2], arguments[3]);
+	public static TimeStampedMessage generateMessage(String[] arguments, MessagePasser parser) {
+		return new TimeStampedMessage(arguments[1], arguments[2], arguments[3], parser.clockFactory.getClockType());
 	}
 }

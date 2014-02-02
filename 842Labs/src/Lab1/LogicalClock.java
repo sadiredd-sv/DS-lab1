@@ -2,13 +2,13 @@ package Lab1;
 
 public class LogicalClock implements ClockService<Integer, TimeStampedMessage> {
 
-	private int timeStamp=0;
+	private int timeStamp = 0;
 	
 	public LogicalClock(){}
 	
 	@Override
 	public Integer increment() {
-		timeStamp = timeStamp+1;
+		timeStamp = timeStamp + 1;
 		return timeStamp;
 	}
 
@@ -36,6 +36,17 @@ public class LogicalClock implements ClockService<Integer, TimeStampedMessage> {
 	@Override
 	public boolean equal(Integer message1, Integer message2) {
 		return message1 == message2;
+	}
+
+	@Override
+	public void print() {
+		System.out.println("current timestamp: " + timeStamp);
+		
+	}
+
+	@Override
+	public String getTimeStampString(Object timestamp) {
+		return String.valueOf(timestamp);
 	}
 
 }
