@@ -57,38 +57,14 @@ public class Logger
 						for (Message message : MessagePasser.deliverQueue) {
 							logInfo.add((TimeStampedMessage)message);
 						};
-
-						Collections.sort(logInfo);
 						
-						boolean flag = false;
-						for(int i = 0; i < logInfo.size(); i++)
-						{
-							if(flag == false && i+1 < logInfo.size())
-							{
-								// Messages are concurrent
-								if(logInfo.get(i).compare(logInfo.get(i+1)) == 0 && logInfo.get(i).equal(logInfo.get(i+1)) == false) 
-								{
-									flag = true;
-									System.out.println("{");
-								}
-							}
-							System.out.println(i + ": " + logInfo.get(i));
-							if(flag == true && i+1 < logInfo.size())
-							{
-								// Messages are not concurrent
-								if(logInfo.get(i).compare(logInfo.get(i+1)) != 0)
-								{
-									flag = false;
-									System.out.println("}");
-								}
-							}
-							if(flag == true && i+1 == logInfo.size())
-							{
-								flag = false;
-								System.out.print("}");
-								System.out.println("");
-							}
+						if (args[2].equals("logical")) {
+							logLogical(logInfo);
+						} else if (args[2].equals("vector")) {
+							logVector(logInfo);
 						}
+
+						
 				}
 				else
 					System.out.println("Enter log or quit\n");
@@ -109,6 +85,44 @@ public class Logger
 				ioe.printStackTrace();
 			}
 		}
+	}
+
+	private static void logVector(ArrayList<TimeStampedMessage> logInfo) {
+		Collections.sort(logInfo);
+		
+		for(int i = 0; i < logInfo.size(); i++) {
+			System.out.println(i + ": " + logInfo.get(i));
+		}
+		
+		for (int i = 0; i < logInfo.size(); i++) {
+			System.out.print("relations for message " + i + ": ");
+			for (int j = 0; j < logInfo.size(); j++) {
+				if (i != j) {
+					int compare = logInfo.get(i).compareTo(logInfo.get(j));
+					boolean equal = logInfo.get(i).equal(logInfo.get(j));
+					if (compare == -1) {
+						System.out.print("message " + i + " < message" + j + " ");
+					} else if (compare == 1) {
+						System.out.print("message " + i + " > message" + j + " ");
+					} else if (equal == true) {
+						System.out.print("message " + i + " = message" + j + " ");
+					} else {
+						System.out.print("message " + i + " || message" + j + " ");
+					}
+				}
+			}
+			System.out.println();
+		}
+		
+	}
+
+	private static void logLogical(ArrayList<TimeStampedMessage> logInfo) {
+		Collections.sort(logInfo);
+		
+		for(int i = 0; i < logInfo.size(); i++) {
+			System.out.println(i + ": " + logInfo.get(i));
+		}
+		
 	}
 	
 }

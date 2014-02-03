@@ -38,6 +38,8 @@ public class Tester {
 			} else if (arguments[0].equals("increment")) {
 				parser.increment(Integer.parseInt(arguments[1]));
 				parser.clockFactory.getClockType().print();
+			} else {
+				System.out.println("Command not supported!");
 			}
 		}
 
