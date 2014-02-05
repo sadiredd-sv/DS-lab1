@@ -2,7 +2,7 @@ package Lab1;
 
 public class LogicalClock implements ClockService<Integer, TimeStampedMessage> {
 
-	private int timeStamp = 0;
+	private int timeStamp = 1;
 	
 	public LogicalClock(){}
 	

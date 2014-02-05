@@ -11,9 +11,16 @@ public class TimeStampedMessage extends Message implements Comparable{
 	 *  */
 	private Object timeStamp;
 	
-	public TimeStampedMessage(String dest, String kind, String data, ClockService clockservice) {
+	public TimeStampedMessage(String dest, String kind, String data, String log, ClockService clockservice) {
 		super(dest, kind, data);
 		this.clockservice = clockservice;
+		this.log = log;
+	}
+	
+	public TimeStampedMessage(TimeStampedMessage message) {
+		super(message);
+		this.timeStamp = message.timeStamp;
+		this.clockservice = message.clockservice;
 	}
 	
 	public ClockService getClockService(){
@@ -26,6 +33,14 @@ public class TimeStampedMessage extends Message implements Comparable{
 
 	public void setTimeStamp(Object timeStamp) {
 		this.timeStamp = timeStamp;
+		if (clockservice instanceof VectorClock) {
+			int[] oldStamp = (int[])timeStamp;
+			int[] newStamp = new int[oldStamp.length];
+			for (int i = 0; i < oldStamp.length; i++) {
+				newStamp[i] = oldStamp[i];
+			}
+			this.timeStamp = newStamp;
+		}
 	}
 	
 	public int compare(TimeStampedMessage message)

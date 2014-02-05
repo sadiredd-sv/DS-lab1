@@ -34,9 +34,9 @@ public class Tester {
 			if (arguments[0].equals("send")) {
 				parser.send(generateMessage(arguments, parser));
 			} else if (arguments[0].equals("receive")){
-				parser.receive();
+				parser.receive(arguments[1]);
 			} else if (arguments[0].equals("increment")) {
-				parser.increment(Integer.parseInt(arguments[1]));
+				parser.increment();
 				parser.clockFactory.getClockType().print();
 			} else {
 				System.out.println("Command not supported!");
@@ -46,6 +46,6 @@ public class Tester {
 	}
 
 	public static TimeStampedMessage generateMessage(String[] arguments, MessagePasser parser) {
-		return new TimeStampedMessage(arguments[1], arguments[2], arguments[3], parser.clockFactory.getClockType());
+		return new TimeStampedMessage(arguments[1], arguments[2], arguments[3], arguments[4], parser.clockFactory.getClockType());
 	}
 }

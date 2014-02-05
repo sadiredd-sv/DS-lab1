@@ -21,6 +21,8 @@ public class Message implements Serializable {
 	public boolean dupe;
 
 	public Object data;
+	
+	public String log;
 
 	public Message(String dest, String kind, Object data) {
 		this.dest = dest;

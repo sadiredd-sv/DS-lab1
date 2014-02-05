@@ -14,6 +14,9 @@ public class VectorClock implements ClockService<int[], TimeStampedMessage> {
 		this.id = id;
 		/* Here, size = total number of users (Every user has his own timestamp) */
 		this.timestamp = new int[size];
+		for (int i = 0; i < timestamp.length; i++) {
+			timestamp[i] = 1;
+		}
 	}
 
 	@Override

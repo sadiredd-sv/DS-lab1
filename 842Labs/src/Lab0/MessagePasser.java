@@ -54,6 +54,12 @@ public class MessagePasser {
 		message.set_source(name);
 		message.set_seqNum(++seq);
 		
+		if (message instanceof TimeStampedMessage) {
+			TimeStampedMessage timeStampedMessage = (TimeStampedMessage)message;
+			timeStampedMessage.setTimeStamp(clockFactory.getClockType().getTimeStamp());
+			clockFactory.getClockType().increment();
+		}
+		
 		boolean send = true;
 		boolean check = true;
 
@@ -108,9 +114,12 @@ public class MessagePasser {
 			
 		}
 		
-		if (message instanceof TimeStampedMessage) {
+		if (message instanceof TimeStampedMessage && message.log.equals("true")) {
 			TimeStampedMessage timeStampedMessage = (TimeStampedMessage)message;
-			timeStampedMessage.setTimeStamp(clockFactory.getClockType().getTimeStamp());
+			TimeStampedMessage log = new TimeStampedMessage(timeStampedMessage);
+			log.dest = "logger";
+			log.log = "false";
+			sendMessage(log);
 		}
 		
 		OutputStream out = node.socket.getOutputStream();
@@ -128,7 +137,7 @@ public class MessagePasser {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Message receive() throws IOException, ClassNotFoundException,
+	public Message receive(String ifLog) throws IOException, ClassNotFoundException,
 			InterruptedException {
 		Message message = deliverQueue.take();
 		
@@ -136,6 +145,15 @@ public class MessagePasser {
 			TimeStampedMessage timeStampedMessage = (TimeStampedMessage)message;
 			clockFactory.getClockType().clockSynchronize(timeStampedMessage);
 			clockFactory.getClockType().print();
+			if (ifLog.equals("true")) {
+				TimeStampedMessage log = new TimeStampedMessage(timeStampedMessage);
+				log.log = "false";
+				log.dest = "logger";
+				log.src = name;
+				log.setTimeStamp(clockFactory.getClockType().getTimeStamp());
+				sendMessage(log);
+			}
+			
 		}
 		
 		while (!receiveDelayQueue.isEmpty()) {
@@ -156,7 +174,7 @@ public class MessagePasser {
 		return id;
 	}
 
-	public void increment(int parseInt) {
+	public void increment() {
 		clockFactory.getClockType().increment();
 	}
 
